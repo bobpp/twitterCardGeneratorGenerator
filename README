@@ -1,0 +1,10 @@
+TwitterCardGeneratorGenerator
+
+ * ついったー名刺ジェネレータ (http://twitter.tyoe2.com/meishi/) の名刺を一括で大量生成するツール
+ * 現在は下記の制限があります
+   * 記載事項は Bio
+   * テンプレートは 「縦レイアウト 白 designed by @kokubucamera」
+ * echo IDList.txt | perl twitter_card_generator_generator.pl
+   このように実行します。IDList.txt は UNIX 改行区切りの Twitter ID リストとします。
+   すると、作業ディレクトリ上に <ID>.png を生成します。
+
