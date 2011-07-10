@@ -1,24 +1,27 @@
-#!/usr/bin/perl 
-#===============================================================================
-#
-#         FILE:  twitter_card_generator_generator.pl
-#
-#        USAGE:  ./twitter_card_generator_generator.pl <Twitter ID>
-#
-#  DESCRIPTION:  Twitter名刺ジェネレータを一括生成
-#   - ID.png を生成します
-#
-#       AUTHOR:  bobpp < bobpp@bobpp.jp >
-#      VERSION:  1.0
-#      CREATED:  10/05/2010 02:59:19
-#===============================================================================
-
 use strict;
 use warnings;
 use utf8;
 use WWW::Mechanize;
+use Getopt::Long;
 
 $| = 1;
+
+GetOptions(
+	'png'      => \my $png,
+	'pdf'      => \my $pdf,
+	'trim-pdf' => \my $trim_pdf,
+);
+
+my($form_number, $ext) = do {
+	my ($f, $e) = (2, 'png');
+	if ($pdf) {
+		($f, $e) = (3, 'pdf');
+	}
+	elsif ($trim_pdf) {
+		($f, $e) = (4, 'pdf');
+	}
+	($f, $e);
+};
 
 # Initialize
 my $mechanize = WWW::Mechanize->new(
@@ -53,11 +56,11 @@ while (<>) {
 
 	print "Second Form... ";
 	$mechanize->submit_form(
-		form_number => 2,
+		form_number => $form_number,
 	);
 
 	print "Image Save... ";
-	open my $card, '>', "${twitter_id}.png" or die;
+	open my $card, '>', "${twitter_id}.${ext}" or die;
 	print $card $mechanize->content;
 	close $card;
 
